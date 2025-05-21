@@ -5,6 +5,10 @@ pipeline {
        go "1.24.1"
     }
 
+    triggers {
+        pollSCM('*/1 * * * *') // Every minute
+    }
+
     stages {
         stage('Build') {
             steps {
