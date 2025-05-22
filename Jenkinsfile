@@ -29,7 +29,7 @@ pipeline {
                 sh """
                 mkdir -p ~/.ssh
                 ssh-keyscan -H target >> ~/.ssh/known_hosts
-                scp -i ${ssh-key} main ${ssh_user}@target:~
+                scp -i ${ssh_key} main ${ssh_user}@target:~
                 """
 
                 }
