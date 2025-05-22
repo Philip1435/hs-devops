@@ -24,7 +24,11 @@ pipeline {
 
         stage('Deploy') {
             steps {
-                sh 'scp main laborant@target:~'
+                sh """
+                mkdir -p ~/.ssh
+                ssh-keyscan -H target >> ~/.ssh/known_hosts
+                scp main laborant@target:~
+                """
             }
         }
     }
