@@ -24,11 +24,15 @@ pipeline {
 
         stage('Deploy') {
             steps {
+                withCredentials([sshUserPrivateKey(credentialsId: 'private-key', keyFileVariable: 'ssh_key', usernameVariable: 'ssh_user')]) {
+
                 sh """
                 mkdir -p ~/.ssh
                 ssh-keyscan -H target >> ~/.ssh/known_hosts
-                scp main laborant@target:~
+                scp main ${ssh_user}@target: -i ${ssh-key}
                 """
+
+                }
             }
         }
     }
