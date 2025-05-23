@@ -30,13 +30,8 @@ pipeline {
                 chmod +x main
                 mkdir -p ~/.ssh
                 ssh-keyscan -H target >> ~/.ssh/known_hosts
-                ssh -i ${ssh_key} laborant@target 'sudo systemctl stop main.service || True'
-                scp -i ${ssh_key} main ${ssh_user}@target:~
-                scp -i ${ssh_key} main.service ${ssh_user}@target:~
-                ssh -i ${ssh_key} laborant@target 'sudo mv /home/laborant/main /opt/main'
-                ssh -i ${ssh_key} laborant@target 'sudo mv /home/laborant/main.service /etc/systemd/system/main.service'
-                ssh -i ${ssh_key} laborant@target 'sudo systemctl daemon-reload'
-                ssh -i ${ssh_key} laborant@target 'sudo systemctl enable --now main.service'
+
+                ansible-playbook --inventory hosts.ini playbook.yml --key-file=${ssh_key}
                 """
 
                 }
