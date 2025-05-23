@@ -30,7 +30,7 @@ pipeline {
                 chmod +x main
                 mkdir -p ~/.ssh
                 ssh-keyscan -H target >> ~/.ssh/known_hosts
-                ssh -i ${ssh_key} laborant@target 'sudo systemctl stop main.service || True'
+                ssh -i ${ssh_key} laborant@target 'sudo systemctl stop main.service 2>/dev/null || true'
                 scp -i ${ssh_key} main ${ssh_user}@target:~
                 scp -i ${ssh_key} main.service ${ssh_user}@target:~
                 ssh -i ${ssh_key} laborant@target 'sudo mv /home/laborant/main /opt/main'
