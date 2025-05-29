@@ -32,7 +32,7 @@ pipeline {
         stage('Docker Build and Push') {
             steps {
                 sh "docker build . --tag ttl.sh/myapp:2h"
-                sh "docker push"
+                sh "docker push ttl.sh/myapp:2h"
                 }
             }
 
