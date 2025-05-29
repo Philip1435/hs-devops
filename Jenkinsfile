@@ -43,6 +43,8 @@ pipeline {
                     chmod +x main
                     mkdir -p ~/.ssh
                     ssh-keyscan -H docker >> ~/.ssh/known_hosts
+                    ssh -i ${ssh_key} laborant@target 'docker stop ${CONTAINER_NAME} || true'
+                    ssh -i ${ssh_key} laborant@target 'docker rm ${CONTAINER_NAME} || true'
                     ssh -i ${ssh_key} laborant@docker 'docker run -d --name ${CONTAINER_NAME} -p ${HOST_PORT}:${CONTAINER_PORT} ${DOCKER_IMAGE}'
                     """
             }
