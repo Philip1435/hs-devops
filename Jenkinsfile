@@ -38,7 +38,7 @@ pipeline {
 
         stage('Docker Deploy') {
             steps {
-                withCredentials([sshUserPrivateKey(credentialsId: 'private-key', keyFileVariable: 'ssh_key', usernameVariable: 'laborant')]) {
+                withCredentials([sshUserPrivateKey(credentialsId: 'private-key', keyFileVariable: 'ssh_key', usernameVariable: 'ssh_user')]) {
                     sh """
                     chmod +x main
                     mkdir -p ~/.ssh
