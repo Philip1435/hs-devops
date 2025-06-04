@@ -1,9 +1,9 @@
-apiVersion: apps/v1
-kind: Deployment
+apiVersion: v1
+kind: Pod
 metadata:
-  name: myapp
   labels:
-    app: myapp
+    run: myapp
+  name: myapp
 spec:
   replicas: 3
   selector:
