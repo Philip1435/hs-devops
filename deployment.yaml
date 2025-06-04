@@ -5,18 +5,8 @@ metadata:
     run: myapp
   name: myapp
 spec:
-  replicas: 3
-  selector:
-    matchLabels:
-      app: myapp
-  template:
-    metadata:
-      labels:
-        app: myapp
-    spec:
-      containers:
-      - name: myapp
-        image: ttl.sh/myapp:2h
-        ports:
-        - containerPort: 4444
-status: {}
+  containers:
+  - name: myapp
+    image: ttl.sh/myapp:2h
+    ports:
+    - containerPort: 4444
