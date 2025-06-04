@@ -5,6 +5,7 @@
       copy:
         src: main
         dest: /opt/main
+        mode: '777'
 
     - name: Create a unit file
       become: True
