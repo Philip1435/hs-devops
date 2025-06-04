@@ -28,10 +28,7 @@ pipeline {
 
                 sh """
                 chmod +x main
-                mkdir -p ~/.ssh
-                ssh-keyscan -H target >> ~/.ssh/known_hosts
-
-                ansible-playbook --inventory hosts.ini playbook.yml --key-file=${ssh_key}
+                ANSIBLE_HOST_KEY_CHECKING=False ansible-playbook --inventory hosts.ini playbook.yml --key-file=${ssh_key}
                 """
 
                 }
