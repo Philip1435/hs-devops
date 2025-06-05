@@ -6,6 +6,7 @@ pipeline {
         CONTAINER_NAME = 'myapp'
         HOST_PORT = '4444'
         CONTAINER_PORT = '4444'
+        AWS_USER = 'ec2-user'
     }
 
     tools {
@@ -36,16 +37,25 @@ pipeline {
                 }
             }
 
-        stage('Docker Deploy') {
+        stage('Apply terraform') {
+            steps {
+                sh "terraform init"
+                sh "terraform apply"
+            }
+        }
+
+        stage('Deploy to cloud instance') {
             steps {
                 withCredentials([sshUserPrivateKey(credentialsId: 'private-key', keyFileVariable: 'ssh_key', usernameVariable: 'ssh_user')]) {
                     sh """
                     chmod +x main
                     mkdir -p ~/.ssh
+                    export instance_ip="${{ terraform output instance_ip | tr -d '"' }}
+
                     ssh-keyscan -H docker >> ~/.ssh/known_hosts
-                    ssh -i ${ssh_key} laborant@docker 'docker stop ${CONTAINER_NAME} || true'
-                    ssh -i ${ssh_key} laborant@docker 'docker rm ${CONTAINER_NAME} || true'
-                    ssh -i ${ssh_key} laborant@docker 'docker run -d --name ${CONTAINER_NAME} -p ${HOST_PORT}:${CONTAINER_PORT} ${DOCKER_IMAGE}'
+                    ssh -i ${ssh_key} ${AWS_USER}@${instance_ip} 'docker stop ${CONTAINER_NAME} || true'
+                    ssh -i ${ssh_key} ${AWS_USER}@${instance_ip} 'docker rm ${CONTAINER_NAME} || true'
+                    ssh -i ${ssh_key} ${AWS_USER}@${instance_ip} 'docker run -d --name ${CONTAINER_NAME} -p ${HOST_PORT}:${CONTAINER_PORT} ${DOCKER_IMAGE}'
                     """
             }
         }
