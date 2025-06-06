@@ -63,7 +63,15 @@ pipeline {
                     """
                 }
             }
-            
         }
+
+        stage('Apply Kubernetes files') {
+            steps {
+                withKubeConfig([credentialsId: 'k8s-token', serverUrl: 'https://k8s:6443/']) {
+                    sh 'kubectl apply -f deployment.yaml'
+                }
+            }
+        }
+
     }
 }
