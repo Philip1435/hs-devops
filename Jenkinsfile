@@ -1,10 +1,6 @@
 pipeline {
     agent any
 
-    tools {
-       nodejs 'node-22'
-    }
-
     triggers {
         pollSCM('*/1 * * * *') // Every minute
     }
