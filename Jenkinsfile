@@ -18,6 +18,13 @@ pipeline {
             }
         }
 
+        stage('Docker Build and Push') {
+            steps {
+                sh "docker build . --tag ttl.sh/myapp:2h"
+                sh "docker push ttl.sh/myapp:2h"
+                }
+            }
+
         stage('Deploy to target') {
             steps {
                 withCredentials([sshUserPrivateKey(credentialsId: 'private-key', keyFileVariable: 'ssh_key', usernameVariable: 'ssh_user')]) {
@@ -40,10 +47,6 @@ pipeline {
                     """
                 }
             }
-        }
-
-        stage('Deploy to docker') {
-
         }
     }
 }
