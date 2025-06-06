@@ -26,7 +26,7 @@ pipeline {
                         ssh-keyscan -H target >> ~/.ssh/known_hosts
 
                         scp -i ${ssh_key} index.js ${ssh_user}@target:~
-                        scp -i ${ssh_key} node_modules ${ssh_user}@target:~
+                        scp -i ${ssh_key} -r node_modules ${ssh_user}@target:~
                         ssh -i ${ssh_key} ${ssh_user}@target '
                             sudo systemctl stop index.service 2>/dev/null || true
                             sudo mv /home/laborant/index.js /opt/index.js
