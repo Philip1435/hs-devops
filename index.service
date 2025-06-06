@@ -3,7 +3,8 @@ Description=My Application Service
 After=network.target
 
 [Service]
-ExecStart=/opt/index.js
+ExecStart=/usr/bin/node /opt/index.js
+WorkingDirectory=/opt
 
 [Install]
 WantedBy=multi-user.target
