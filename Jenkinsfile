@@ -48,5 +48,22 @@ pipeline {
                 }
             }
         }
+
+        stage('Deploy to docker') {
+            steps {
+                withCredentials([sshUserPrivateKey(credentialsId: 'private-key', keyFileVariable: 'ssh_key', usernameVariable: 'ssh_user')]) {
+                    sh """
+                    mkdir -p ~/.ssh
+                    ssh-keyscan -H docker >> ~/.ssh/known_hosts
+                    ssh -i ${ssh_key} ${ssh_user}@docker '
+                        docker stop myapp || true
+                        docker rm myapp || true
+                        docker run -d --name myapp -p 4444:4444 ttl.sh/myapp:2h
+                    '
+                    """
+                }
+            }
+            
+        }
     }
 }
