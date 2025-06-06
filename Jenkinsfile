@@ -36,11 +36,14 @@ pipeline {
 
                             sudo systemctl daemon-reload
                             sudo systemctl enable --now index.service
-                            sudo systemctl start index.service || (echo "Service failed to start"; sudo systemctl status index.service; sudo journalctl -u index.service --no-pager --since "5 minutes ago"; exit 1)
                         '
                     """
                 }
             }
+        }
+
+        stage('Deploy to docker') {
+
         }
     }
 }
